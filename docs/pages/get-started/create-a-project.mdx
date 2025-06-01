@@ -1,24 +1,61 @@
----
-title: Create a project
-description: Learn how to create a new Expo project.
-hideTOC: true
----
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 
-import { Terminal } from '~/ui/components/Snippet';
+const SECRET_PASSWORD = 'dija2025';
 
-System requirements:
+export default function App() {
+  const [password, setPassword] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-- [Node.js (LTS)](https://nodejs.org/en/).
-- macOS, Windows (Powershell and [WSL 2](https://expo.fyi/wsl)), and Linux are supported.
+  const handleLogin = () => {
+    if (password === SECRET_PASSWORD) {
+      setIsLoggedIn(true);
+    } else {
+      Alert.alert('Неправильный пароль', 'Попробуй снова');
+    }
+  };
 
-We recommend starting with the default project created by `create-expo-app`. The default project includes example code to help you get started.
+  if (isLoggedIn) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Добро пожаловать в приложение!</Text>
+      </View>
+    );
+  }
 
-To create a new project, run the following command:
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Введите пароль для входа</Text>
+      <TextInput
+        secureTextEntry
+        style={styles.input}
+        placeholder="Пароль"
+        onChangeText={setPassword}
+        value={password}
+      />
+      <Button title="Войти" onPress={handleLogin} />
+    </View>
+  );
+}
 
-<Terminal cmd={['$ npx create-expo-app@latest']} />
-
-> You can choose a different template by adding the [`--template` option](/more/create-expo/#--template).
-
-## Next step
-
-You have a project. Now it's time to set up your development environment so that you can start developing.
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#f0f0f0',
+  },
+  title: {
+    fontSize: 22,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#aaa',
+    padding: 10,
+    borderRadius: 10,
+    marginBottom: 20,
+    backgroundColor: 'white',
+  },
+});
